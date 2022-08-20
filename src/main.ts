@@ -106,3 +106,80 @@ let s3: string = vUnknown as string;   // "as" operator makes type assertion
 let pageNumber: string = "1";
 //let numericPageNumber: number = pageNumber as number;   // cant convert type directy to another type, first have to convert into unknown type
 let numericPageNumber: number = (pageNumber as unknown) as number;
+
+
+
+// DOM manipulation
+
+//const someElement = document.querySelector(".foo");
+//console.log("someElement", (someElement as any).value);
+
+/// recommended to type cast in specific element
+const someElement = document.querySelector(".foo") as HTMLInputElement;
+
+console.log("someElement", someElement.value);
+
+const xElement = document.querySelector(".alpha");
+xElement.addEventListener("blur", (event) => {
+    const target = event.target as HTMLInputElement;
+    console.log("event", target.value);
+});
+
+
+interface UserInterface
+{
+    getFullName(): string;
+}
+
+class User implements UserInterface
+{
+    private firstName: string;
+    private lastName: string;
+    readonly name: string;
+    static readonly maxAge: string = "50";
+    
+    constructor(firstName: string, lastName: string)
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.name = firstName + " " + lastName;
+    }
+
+    changeName(): void
+    {
+        //this.name = "";     can not change readonly property
+    }
+    
+    
+    getFullName(): string
+    {
+        return this.firstName + " " + this.lastName;
+    }
+}
+
+
+class Admin extends User
+{
+    private editor: string;
+
+    setEditor(editor: string)
+    {
+        this.editor = editor;
+    }
+
+    getEditor(): string
+    {
+        return this.editor;
+    }
+}
+
+const user5 = new User("Zain", "Arif");
+console.log(user5.getFullName());
+console.log(User.maxAge);
+
+const admin = new Admin("admin","admin");
+admin.setEditor("abc");
+console.log(admin.getEditor());
+
+
+
