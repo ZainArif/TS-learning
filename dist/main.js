@@ -29,6 +29,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var a = "1";
 console.log(a);
 var hello = "world";
@@ -122,3 +133,64 @@ console.log(User.maxAge);
 var admin = new Admin("admin", "admin");
 admin.setEditor("abc");
 console.log(admin.getEditor());
+// generics
+/*
+const addId = (obj) =>   /// obj is type of any
+{
+    const id = Math.random().toString(15);
+    return {
+        ...obj,
+        id
+    };
+};
+*/
+// below is the recommended ways to define generics
+// 1.
+var addId = function (obj) {
+    var id = Math.random().toString(15);
+    return __assign(__assign({}, obj), { id: id });
+};
+var person = {
+    name: "Zain"
+};
+var result = addId(person);
+console.log("result", result);
+var result1 = addId("person");
+console.log("result1", result1);
+// 2.
+var addId2 = function (obj) {
+    var id = Math.random().toString(15);
+    return __assign(__assign({}, obj), { id: id });
+};
+var person2 = {
+    name: "Zain"
+};
+var result3 = addId2(person2);
+console.log("result3", result3);
+var role = {
+    name: "admin",
+    data: {
+        meta: "foo"
+    },
+    meta: "woo"
+};
+var role2 = {
+    name: "admin",
+    data: ["home", "security"],
+    meta: 10
+};
+// enums
+var WorkStatus;
+(function (WorkStatus) {
+    WorkStatus[WorkStatus["notStarted"] = 0] = "notStarted";
+    WorkStatus[WorkStatus["inProgress"] = 1] = "inProgress";
+    WorkStatus["done"] = "done";
+})(WorkStatus || (WorkStatus = {}));
+;
+var workStatus = WorkStatus.notStarted;
+console.log(workStatus);
+// workStatus = "12";   can assigned because of type enum  WorkStatus
+workStatus = WorkStatus.inProgress;
+console.log(workStatus);
+workStatus = WorkStatus.done;
+console.log(workStatus);

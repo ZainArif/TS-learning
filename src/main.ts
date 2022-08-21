@@ -183,3 +183,106 @@ console.log(admin.getEditor());
 
 
 
+// generics
+
+/*
+const addId = (obj) =>   /// obj is type of any
+{
+    const id = Math.random().toString(15);
+    return {
+        ...obj,
+        id
+    };
+};
+*/ 
+
+// below is the recommended ways to define generics
+
+// 1.
+const addId = <T>(obj: T) =>
+{
+    const id = Math.random().toString(15);
+    return {
+        ...obj,
+        id
+    };
+};
+
+const person = {
+    name: "Zain"
+};
+
+const result = addId(person);
+console.log("result", result);
+
+const result1 = addId<string>("person");
+console.log("result1", result1);
+
+// 2.
+const addId2 = <T extends object>(obj: T) =>    // if T should be only of object type
+{
+    const id = Math.random().toString(15);
+    return {
+        ...obj,
+        id
+    };
+};
+
+interface IPerson {
+    name: string;
+}
+
+const person2: IPerson = {
+    name: "Zain"
+};
+
+const result3 = addId2<IPerson>(person2);
+console.log("result3", result3);
+
+// const result4 = addId2<string>("person");    string is not object
+
+
+interface IRole<T,V> {
+    name: string;
+    data: T;
+    meta: V;
+}
+
+
+const role: IRole<{meta: string}, string> = {
+    name : "admin",
+    data : {
+        meta : "foo"
+    },
+    meta : "woo"
+};
+
+const role2: IRole<string[], number> = {
+    name : "admin",
+    data : ["home","security"],
+    meta : 10
+};
+
+
+// enums
+
+
+enum WorkStatus {
+    notStarted,
+    inProgress,
+    done = "done"
+};
+
+let workStatus: WorkStatus = WorkStatus.notStarted;
+
+console.log(workStatus);
+
+// workStatus = "12";   can assigned because of type enum  WorkStatus
+
+workStatus = WorkStatus.inProgress;
+console.log(workStatus);
+
+workStatus = WorkStatus.done;
+console.log(workStatus);
+
+
